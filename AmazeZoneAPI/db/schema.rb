@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_24_225001) do
+ActiveRecord::Schema[7.0].define(version: 2025_01_31_195012) do
+  create_table "credit_cards", force: :cascade do |t|
+    t.string "name"
+    t.string "card_number"
+    t.date "expiration_date"
+    t.string "cvv"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_credit_cards_on_user_id"
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "name"
     t.string "category"
@@ -30,4 +41,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_24_225001) do
     t.string "password_digest"
   end
 
+  add_foreign_key "credit_cards", "users"
 end

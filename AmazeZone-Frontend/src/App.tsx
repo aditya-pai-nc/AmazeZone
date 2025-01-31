@@ -10,6 +10,10 @@ import ProductList from './components/ProductList';
 import ProductDetail from './components/ProductDetail';
 import ProductForm from './components/ProductForm';
 import ProductDelete from './components/ProductDelete';
+import CreditCardList from './components/CreditCardList';
+import CreditCardDetail from './components/CreditCardDetail';
+import CreditCardForm from './components/CreditCardForm';
+import CreditCardDelete from './components/CReditCardDelete';
 
 interface User {
 	id?: number;
@@ -23,7 +27,7 @@ const App: React.FC = () => {
 	const [user, setUser] = useState<User>({});
 	const [signupSuccess, setSignupSuccess] = useState<boolean>(false);
 
-	const handleLogin = (data: { auth_token: string }) => {
+	const handleLogin = (data: { auth_token: string, user: any }) => {
 		setIsLoggedIn(true);
 		setUser(data.user);
 		// Store the auth_token in local storage
@@ -60,6 +64,14 @@ const App: React.FC = () => {
 						<Route path=':id/edit' element={<ProductForm />} />
 						<Route path=':id/delete' element={<ProductDelete />} />
 					</Route>
+					<Route path='/credit_cards' element={<PrivateRoute />}>
+						<Route path='' element={<CreditCardList />} />
+						<Route path=':id' element={<CreditCardDetail />} />
+						<Route path='new' element={<CreditCardForm />} />
+						<Route path=':id/edit' element={<CreditCardForm />} />
+						<Route path=':id/delete' element={<CreditCardDelete />} />
+					</Route>
+
 					<Route
 						path='*'
 						element={<Home signupSuccess={signupSuccess} />}
