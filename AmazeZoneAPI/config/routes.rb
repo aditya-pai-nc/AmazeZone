@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :transactions
 
   post '/auth/login', to: 'auth#login'
 

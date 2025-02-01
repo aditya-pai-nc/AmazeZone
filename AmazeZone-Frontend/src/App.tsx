@@ -11,9 +11,13 @@ import ProductDetail from './components/ProductDetail';
 import ProductForm from './components/ProductForm';
 import ProductDelete from './components/ProductDelete';
 import CreditCardList from './components/CreditCardList';
-import CreditCardDetail from './components/CreditCardDetail';
 import CreditCardForm from './components/CreditCardForm';
-import CreditCardDelete from './components/CReditCardDelete';
+import CreditCardDelete from './components/CreditCardDelete';
+import CreditCardDetail from './components/CreditCardDetail';
+import TransactionList from './components/TransactionList';
+import TransactionDetail from './components/TransactionDetail';
+import TransactionForm from './components/TransactionForm';
+import TransactionDelete from './components/TransactionDelete';
 
 interface User {
 	id?: number;
@@ -27,7 +31,7 @@ const App: React.FC = () => {
 	const [user, setUser] = useState<User>({});
 	const [signupSuccess, setSignupSuccess] = useState<boolean>(false);
 
-	const handleLogin = (data: { auth_token: string, user: any }) => {
+	const handleLogin = (data: { auth_token: string }) => {
 		setIsLoggedIn(true);
 		setUser(data.user);
 		// Store the auth_token in local storage
@@ -71,7 +75,12 @@ const App: React.FC = () => {
 						<Route path=':id/edit' element={<CreditCardForm />} />
 						<Route path=':id/delete' element={<CreditCardDelete />} />
 					</Route>
-
+					<Route path='/transactions' element={<PrivateRoute />}>
+						<Route path='' element={<TransactionList />} />
+						<Route path=':id' element={<TransactionDetail />} />
+						<Route path='new' element={<TransactionForm />} />
+						<Route path=':id/delete' element={<TransactionDelete />} />
+					</Route>
 					<Route
 						path='*'
 						element={<Home signupSuccess={signupSuccess} />}

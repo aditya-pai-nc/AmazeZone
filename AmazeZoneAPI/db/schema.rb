@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_01_31_195012) do
+ActiveRecord::Schema[7.0].define(version: 2025_02_01_010407) do
   create_table "credit_cards", force: :cascade do |t|
     t.string "name"
     t.string "card_number"
@@ -31,6 +31,20 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_31_195012) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "transactions", force: :cascade do |t|
+    t.string "transaction_number"
+    t.integer "quantity"
+    t.decimal "total_cost"
+    t.integer "user_id", null: false
+    t.integer "product_id", null: false
+    t.integer "credit_card_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["credit_card_id"], name: "index_transactions_on_credit_card_id"
+    t.index ["product_id"], name: "index_transactions_on_product_id"
+    t.index ["user_id"], name: "index_transactions_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email_address"
@@ -42,4 +56,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_31_195012) do
   end
 
   add_foreign_key "credit_cards", "users"
+  add_foreign_key "transactions", "credit_cards"
+  add_foreign_key "transactions", "products"
+  add_foreign_key "transactions", "users"
 end

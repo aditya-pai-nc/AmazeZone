@@ -2,25 +2,32 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-const ProductList: React.FC = () => {
-	const [products, setProducts] = useState<{
-		name: string,
-		category: string,
-		quantity: number,
-		price: number,
-		id:string
-	}[]>([]);
+interface TransactionProps {
+	flexDirection?: 'column';
+	textAlign?: 'center';
+}
+
+const TransactionList: React.FC<TransactionProps> = ({ flexDirection, textAlign }) => {
+	const [transactions, setTransactions] = useState([
+		{
+			id: 0,
+			quantity: '',
+			total_cost: '',
+			product_id: '',
+			credit_card_id: '',
+		}
+	]);
 
 	useEffect(() => {
 		async function fetchData() {
-			const response = await axios.get('http://localhost:3000/products', {
+			const response = await axios.get('http://localhost:3000/transactions', {
 				headers: {
 					Authorization: localStorage.getItem('auth_token'),
 					Accept: 'application/json',
 					'Content-Type': 'application/json',
 				},
 			}); // Adjust the API endpoint as needed
-			setProducts(response.data);
+			setTransactions(response.data);
 		}
 
 		fetchData();
@@ -30,7 +37,7 @@ const ProductList: React.FC = () => {
 		width: '90vw',
 		height: '100vh',
 		display: 'flex',
-		flexDirection: 'column',
+		flexDirection: flexDirection || 'column',
 		marginLeft: '16px',
 	};
 
@@ -43,7 +50,6 @@ const ProductList: React.FC = () => {
 	const listItemStyle = {
 		marginBottom: '10px',
 		padding: '10px',
-		// backgroundColor: 'white',
 		border: '1px solid #ddd',
 		borderRadius: '4px',
 		display: 'flex',
@@ -53,7 +59,7 @@ const ProductList: React.FC = () => {
 
 	const linkStyle = {
 		width: '10%',
-		textAlign: 'center',
+		textAlign: textAlign || 'center',
 		textDecoration: 'none',
 		marginLeft: 'auto',
 		padding: '5px 10px',
@@ -61,44 +67,34 @@ const ProductList: React.FC = () => {
 		color: 'white',
 		borderRadius: '4px',
 	};
-	const linkStyle2 = {
-		width: '10%',
-		textAlign: 'center',
-		textDecoration: 'none',
-		marginTop: '5%',
-		padding: '5px 10px',
-		backgroundColor: '#007bff',
-		color: 'white',
-		borderRadius: '4px',
-	};
+
 	const listTitleStyle = {
-		width: '30%',
+		width: '15%',
 	};
 
 	return (
 		<div style={pageStyle}>
-			<h1 style={headerStyle}>Product List</h1>
+			<h1 style={headerStyle}>Transaction List</h1>
 			<ul>
-				{products.map((product) => (
-					<li key={product.id} style={listItemStyle}>
+				{transactions.map((transaction) => (
+					<li key={transaction.id} style={listItemStyle}>
 						<div style={listTitleStyle}>
-							{product.name} - {product.category} - $
-							{product.price.toFixed(2)}
+							Quantity: {transaction.quantity}
 						</div>
-						<Link to={`/products/${product.id}`} style={linkStyle}>
+						<div style={listTitleStyle}>
+							Total Cost: {transaction.total_cost}
+						</div>
+            <div style={listTitleStyle}>
+							<b>Product ID:</b> {transaction.product_id}
+						</div>
+						<div style={listTitleStyle}>
+							<b>Credit Card ID:</b> {transaction.credit_card_id}
+						</div>
+						<Link to={`/transactions/${transaction.id}`} style={linkStyle}>
 							Show
 						</Link>
-						<Link to={`/transactions/new`} state={{productId: product.id}} style={linkStyle}>
-							Purchase
-						</Link>
 						<Link
-							to={`/products/${product.id}/edit`}
-							style={linkStyle}
-						>
-							Edit
-						</Link>
-						<Link
-							to={`/products/${product.id}/delete`}
+							to={`/transactions/${transaction.id}/delete`}
 							style={linkStyle}
 						>
 							Delete
@@ -106,11 +102,8 @@ const ProductList: React.FC = () => {
 					</li>
 				))}
 			</ul>
-			<Link to={`/products/new`} style={linkStyle2}>
-				New Product
-			</Link>
 		</div>
 	);
 };
 
-export default ProductList;
+export default TransactionList;
