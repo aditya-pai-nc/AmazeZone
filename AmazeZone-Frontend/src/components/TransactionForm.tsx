@@ -32,12 +32,10 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ flexDirection }) => {
 		product_id: 0,
 		credit_card_id: 0,
 	});
-
 	const [productMap, setProductMap] = useState<{ [key: number]: Product }>({});
 	const [creditCardList, setCreditCardList] = useState<CreditCard[]>([]);
 
 	const navigate = useNavigate();
-
 
 	useEffect(() => {
 		const fetchProductsAndCards = async () => {
