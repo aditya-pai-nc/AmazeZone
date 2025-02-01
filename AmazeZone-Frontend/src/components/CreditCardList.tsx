@@ -22,7 +22,7 @@ const CreditCardList: React.FC = () => {
             }); // Adjust the API endpoint as needed
             setCreditCards(response.data);
         }
-
+        
         fetchData();
     }, []);
 
@@ -36,8 +36,6 @@ const CreditCardList: React.FC = () => {
     }
 
     const headerStyle: CSSProperties = {
-
-
         marginTop: '5%',
         fontSize: '2.5rem',
         marginBottom: '20px',
@@ -45,7 +43,6 @@ const CreditCardList: React.FC = () => {
     const listItemStyle: CSSProperties = {
         marginBottom: '10px',
         padding: '10px',
-        // backgroundColor: 'white',
         border: '1px solid #ddd',
         borderRadius: '4px',
         display: 'flex',
